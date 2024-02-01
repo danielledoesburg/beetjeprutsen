@@ -25,7 +25,7 @@ class RecipeIngredient extends Model
         return $this->belongsTo(Unit::class);
     }
 
-    public function unitName(): string
+    public function getUnitNameAttribute(): string
     {
         return $this->amount > 1 && $this->unit->name_plural ? $this->unit->name_plural : $this->unit->name_singular;
     }
