@@ -3,34 +3,80 @@
 namespace App\Http\Controllers;
 
 use App\Models\Recipe;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
-/**
- * Recipe controller.
- */
 class RecipeController extends Controller
 {
     /**
-     * Show recipe index.
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory @todo check types
+     * Display a listing of the recipes.
      */
-    public function index() // @todo
+    public function index(): View
     {
-        return view('recipes');
+        return view(
+            'recipes.index',
+            ['recipes' => Recipe::all()]
+        );
     }
 
     /**
-     * Show recipe by id.
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory @todo check types
+     * Show the form for creating a new recipe.
      */
-    public function show(int $id) // @todo
+    public function create()
     {
-        if (!$recipe = Recipe::find($id)) {
-            return abort(404, 'recipe not found');
-        }
+        return view('recipes.create');
+    }
 
+    /**
+     * Store a newly created recipe in storage.
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'instructions' => 'string',
+            'external_url' => 'url',
+            'tested' => 'nullable|boolean',
+        ]);
+ 
+        $recipe = Recipe::create($validated);
+ 
+        return redirect(route('recipes.show', [$recipe]));
+    }
+
+    /**
+     * Display the specified recipe.
+     */
+    public function show(string $id)
+    {
         return view(
-            'recipe',
-            ['recipe' => $recipe]
+            'recipes.show',
+            ['recipe' => Recipe::findOrFail($id)]
         );
+    }
+
+    /**
+     * Show the form for editing the specified recipe.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified recipe in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified recipe from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }

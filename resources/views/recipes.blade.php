@@ -1,1 +1,0 @@
-recipeS.blade.php

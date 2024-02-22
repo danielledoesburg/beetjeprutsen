@@ -6,4 +6,7 @@
     @endforeach
 </ul>
 <p>{{ $recipe->instructions }}</p>
-<a href="{{ $recipe->external_url }}">Ga naar het originele recept</a>
+<ul>
+    <li><a href="{{ $recipe->external_url }}">Ga naar het originele recept</a></li>
+    <li><a href="{{ route('recipes.edit', $recipe) }}">Recept aanpassen</a></li>
+</ul>
